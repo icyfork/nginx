@@ -513,6 +513,8 @@ extern ngx_atomic_t  *ngx_stat_active;
 extern ngx_atomic_t  *ngx_stat_reading;
 extern ngx_atomic_t  *ngx_stat_writing;
 extern ngx_atomic_t  *ngx_stat_waiting;
+extern ngx_atomic_t  *ngx_stat_bytes_sent;
+extern ngx_atomic_t  *ngx_stat_bytes_received;
 
 #endif
 

@@ -1893,6 +1893,7 @@ ngx_http_process_request(ngx_http_request_t *r)
     r->stat_reading = 0;
     (void) ngx_atomic_fetch_add(ngx_stat_writing, 1);
     r->stat_writing = 1;
+    (void) ngx_atomic_fetch_add(ngx_stat_bytes_received, r->request_length);
 #endif
 
     c->read->handler = ngx_http_request_handler;
@@ -3532,6 +3533,7 @@ ngx_http_close_connection(ngx_connection_t *c)
 
 #if (NGX_STAT_STUB)
     (void) ngx_atomic_fetch_add(ngx_stat_active, -1);
+    (void) ngx_atomic_fetch_add(ngx_stat_bytes_sent, c->sent);
 #endif
 
     c->destroyed = 1;

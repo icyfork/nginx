@@ -86,7 +86,7 @@ static ngx_int_t ngx_http_status_handler(ngx_http_request_t *r)
     ngx_int_t          rc;
     ngx_buf_t         *b;
     ngx_chain_t        out;
-    ngx_atomic_int_t   ap, hn, ac, rq, rd, wr, wa;
+    ngx_atomic_int_t   ap, hn, ac, rq, rd, wr, wa, bs, br;
 
     if (r->method != NGX_HTTP_GET && r->method != NGX_HTTP_HEAD) {
         return NGX_HTTP_NOT_ALLOWED;
@@ -132,6 +132,8 @@ static ngx_int_t ngx_http_status_handler(ngx_http_request_t *r)
     rd = *ngx_stat_reading;
     wr = *ngx_stat_writing;
     wa = *ngx_stat_waiting;
+    bs = *ngx_stat_bytes_sent;
+    br = *ngx_stat_bytes_received;
 
     b->last = ngx_sprintf(b->last, "Active connections: %uA \n", ac);
 
@@ -142,6 +144,8 @@ static ngx_int_t ngx_http_status_handler(ngx_http_request_t *r)
 
     b->last = ngx_sprintf(b->last, "Reading: %uA Writing: %uA Waiting: %uA \n",
                           rd, wr, wa);
+
+    b->last = ngx_sprintf(b->last, "Bytes received: %uA sent: %uA \n", br, bs);
 
     r->headers_out.status = NGX_HTTP_OK;
     r->headers_out.content_length_n = b->last - b->pos;
